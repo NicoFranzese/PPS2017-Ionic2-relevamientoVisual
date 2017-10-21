@@ -1,0 +1,38 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>
+        Login
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <!-- <ion-view view-title="Login" name="login-view"> -->
+      <ion-content class="padding">
+          <div class="list list-inset">
+            <ion-item>
+              <ion-label>Usuario</ion-label>
+              <ion-input [(ngModel)]="usuario" id="usuario" name="usuario"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label class="item item-input">Clave</ion-label>
+              <ion-input [(ngModel)]="password" id="password" name="password" type="password"></ion-input>
+            </ion-item>
+          <ion-item>
+            <ion-label class = "item item-input item-select item-positive">Tipo</ion-label>   
+              <ion-select [(ngModel)]="tipo" id="tipo" name="tipo" (ngModelChange)="HardcodearUsuario()">
+                  <ion-option selected>Seleccione Usuario</ion-option>
+                  <ion-option>Admin</ion-option>
+                  <ion-option>Invitado</ion-option>
+                  <ion-option>Usuario</ion-option>
+                  <ion-option>J1</ion-option>
+                  <ion-option>J2</ion-option>
+              </ion-select>
+            </ion-item>
+          <button ion-button 
+          (click)="Login(usuario, password, tipo)">Login</button>
+          <!-- <button class="button button-block button-calm" (click)="Login(usuario, password, tipo)">Login</button> -->
+      </div>
+      </ion-content>
+   <!-- </ion-view>  -->
+  </ion-content>
