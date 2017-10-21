@@ -25,101 +25,76 @@ export class MovimientoPage {
   private tipoImg: string;
   private indice = 0;
 
-  private lastX:number;
-  private lastY:number;
-  private lastZ:number;
-  private moveCounter:number = 0;
+  private lastX: number;
+  private lastY: number;
+  private lastZ: number;
+  private moveCounter: number = 0;
   private cont = 0;
   private coordenadas;
+  private bandera = false;
 
-  constructor(public navCtrl: NavController,  private toastCtrl: ToastController, public navParams: NavParams,
-    public servicioCosas: CosasProvider,private loadingCtrl: LoadingController, private deviceMotion: DeviceMotion,
-    public platform:Platform) {
-      this.tipoImg = localStorage.getItem("queCosa");
-      localStorage.setItem("coordenadas","0");
-      this.getImagenes();   
+  constructor(public navCtrl: NavController, private toastCtrl: ToastController, public navParams: NavParams,
+    public servicioCosas: CosasProvider, private loadingCtrl: LoadingController, private deviceMotion: DeviceMotion,
+    public platform: Platform) {
+    this.tipoImg = localStorage.getItem("queCosa");
+    this.getImagenes();
 
   }
 
   ionViewDidLoad() {
     // console.log('ionViewDidLoad MovimientoPage');
-    
+
   }
 
-  async ngOnInit() {
-      await this.movimiento();
+  ngOnInit() {
+    this.movimiento2();
   }
 
   getImagenes() {
-    this.servicioCosas.getImagenes().subscribe(res => { 
-      this.imagenes= [];
-      
-      res.forEach(img=>{
-        img.forEach(i =>{
+    this.servicioCosas.getImagenes().subscribe(res => {
+      this.imagenes = [];
+
+      res.forEach(img => {
+        img.forEach(i => {
           if ((i.tipoImg === this.tipoImg) && (i.usuario === localStorage.getItem("usuario"))) {
             this.imagenes.push(i);
-          }          
+          }
         });
         this.cont = this.cont + 1
       })
     })
   }
 
+  movimiento2() {
+    var subscription = this.deviceMotion.watchAcceleration({ frequency: 50 }).subscribe((acceleration: DeviceMotionAccelerationData) => {
+      console.log(acceleration);
 
-  movimiento(){
-    //this.platform.ready().then(() => {
-      var subscription = this.deviceMotion.watchAcceleration({frequency:200}).subscribe(acc => {
-        //console.log(acc);
-  
-        if(!this.lastX) {
-          this.lastX = acc.x;
-          this.lastY = acc.y;
-          this.lastZ = acc.z;
-          //return;
-        }
-  
-        let deltaX:number, deltaY:number, deltaZ:number;
-        deltaX = Math.abs(acc.x-this.lastX);
-        deltaY = Math.abs(acc.y-this.lastY);
-        deltaZ = Math.abs(acc.z-this.lastZ);
-  
-        if(deltaX + deltaY + deltaZ > this.cont) {
-          this.moveCounter++;
-        } else {
-          this.moveCounter = Math.max(0, --this.moveCounter);
-        }
-  
-        if(this.indice > (this.cont - 1)) { 
-          //console.log('SHAKE');
-          //this.loadCats(); 
-          this.indice=0; 
-        }
-    
-        this.lastX = acc.x;
-        this.lastY = acc.y;
-        this.lastZ = acc.z;
-  
+      if ((acceleration.x < 0 - 5) && (this.bandera == false)) {
+        this.bandera = true;
+          if (this.indice > (this.cont - 1)) {
+            this.indice = 0;
+          } else {
+            this.indice += 1;
+            this.imagenes[this.indice];
+          }        
+      }
+      
+      if ((acceleration.x > 0 + 5) && (this.bandera == false)){
+        this.bandera = true;
+          if (this.indice > (this.cont - 1)) {
+            this.indice = 0;
+          } else {
+            this.indice -= 1;
+            this.imagenes[this.indice];
+          }
+        }    
 
-        if (this.lastX < 0) {
-          this.indice = this.indice + 1;
-        }else if (this.lastX > 0) {
-          this.indice = this.indice - 1;
+        if ((acceleration.x > 0 - 2) && (acceleration.x < 0 + 2)){
+          this.bandera = false;
         }
-    
-        return this.imagenes[this.indice];
-        
-      });
-  
-
-  
-      // alert(this.lastX);
-      // alert(this.lastY);
-      // alert(this.lastZ);
-      // alert(this.moveCounter);
-  
-   // });
+    });
   }
-  
+
 
 
 
