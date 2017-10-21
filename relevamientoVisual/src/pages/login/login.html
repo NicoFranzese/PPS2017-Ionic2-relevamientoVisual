@@ -12,11 +12,11 @@
           <div class="list list-inset">
             <ion-item>
               <ion-label>Usuario</ion-label>
-              <ion-input [(ngModel)]="usuario" id="usuario" name="usuario"></ion-input>
+              <ion-input disabled [(ngModel)]="usuario" id="usuario" name="usuario"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label class="item item-input">Clave</ion-label>
-              <ion-input [(ngModel)]="password" id="password" name="password" type="password"></ion-input>
+              <ion-input disabled [(ngModel)]="password" id="password" name="password" type="password"></ion-input>
             </ion-item>
           <ion-item>
             <ion-label class = "item item-input item-select item-positive">Tipo</ion-label>   
@@ -29,8 +29,8 @@
                   <ion-option>J2</ion-option>
               </ion-select>
             </ion-item>
-          <button ion-button 
-          (click)="Login(usuario, password, tipo)">Login</button>
+          <button ion-button block color="danger" 
+          (click)="Login(usuario, password, tipo)">Ingresar</button>
           <!-- <button class="button button-block button-calm" (click)="Login(usuario, password, tipo)">Login</button> -->
       </div>
       </ion-content>

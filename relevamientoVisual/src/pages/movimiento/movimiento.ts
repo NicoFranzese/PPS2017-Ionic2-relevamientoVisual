@@ -66,27 +66,27 @@ export class MovimientoPage {
   }
 
   movimiento2() {
+    
     var subscription = this.deviceMotion.watchAcceleration({ frequency: 50 }).subscribe((acceleration: DeviceMotionAccelerationData) => {
-      console.log(acceleration);
 
       if ((acceleration.x < 0 - 5) && (this.bandera == false)) {
         this.bandera = true;
-          if (this.indice > (this.cont - 1)) {
+          if (this.indice == (this.cont - 1)) {
             this.indice = 0;
           } else {
             this.indice += 1;
-            this.imagenes[this.indice];
-          }        
+          }    
+          this.imagenes[this.indice];    
       }
       
       if ((acceleration.x > 0 + 5) && (this.bandera == false)){
         this.bandera = true;
-          if (this.indice > (this.cont - 1)) {
+          if (this.indice == 0) {
             this.indice = 0;
           } else {
             this.indice -= 1;
-            this.imagenes[this.indice];
           }
+          this.imagenes[this.indice];
         }    
 
         if ((acceleration.x > 0 - 2) && (acceleration.x < 0 + 2)){
@@ -94,8 +94,4 @@ export class MovimientoPage {
         }
     });
   }
-
-
-
-
 }
